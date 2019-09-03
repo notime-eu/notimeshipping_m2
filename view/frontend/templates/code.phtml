@@ -1,0 +1,70 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Notime\Shipping\Block\Checkout\Code */
+
+$block->init();
+?>
+
+<?php if ($block->isActive()): ?>
+
+<script type="text/javascript">
+    function setSelectedService() {
+        var serviceGuid = checkoutConfig.quoteData.notime_service_id;
+        var timeWindowDate = checkoutConfig.quoteData.notime_timewindow_date;
+
+        if (serviceGuid && timeWindowDate) {
+            window.Notime.Widget.setSelectedService(serviceGuid, timeWindowDate);
+        }
+    }
+
+    function initNotmeWidget(){
+        var script = document.getElementById('notime-widget-code');
+        if((script !== null) && script.parentNode) {
+            script.parentNode.removeChild(script);
+        }
+        script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://widget.notimeapi.com/NotimeWidget?groupId=' +
+            checkoutConfig.quoteData.notimeJSgroupId + '&mode=1&ecommerceZipCodeId=notimepostcode&language=<?php echo $this->getLanguage();?>';
+        script.id = 'notime-widget-code';
+
+
+        if (script.readyState) {
+            script.onreadystatechange = function () { // For old versions of IE
+                if (this.script === 'complete' || this.script === 'loaded') {
+                    setSelectedService();
+                }
+            };
+        } else { // Other browsers
+            script.onload = setSelectedService;
+        }
+        document.head.appendChild(script);
+    }
+</script>
+
+
+<script type="text/javascript">
+(function () {
+
+if ( typeof window.CustomEvent === "function" ) return false;
+
+function CustomEvent ( event, params ) {
+params = params || { bubbles: false, cancelable: false, detail: undefined };
+var evt = document.createEvent( 'CustomEvent' );
+evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+return evt;
+}
+
+CustomEvent.prototype = window.Event.prototype;
+
+window.CustomEvent = CustomEvent;
+})();
+</script>
+
+<?php else: ?>
+    <script type="text/javascript">
+        function initNotmeWidget() {}
+    </script>
+<?php endif; ?>

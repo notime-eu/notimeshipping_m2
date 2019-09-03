@@ -1,0 +1,30 @@
+<div class="notimepostcode-block" data-bind="visible: selectedMethod() == 'notime_notime'">
+    <div class="checkout-block" id="notime_shipping">
+        <div id='notimeWidgetNotSupportedPostcodeContainer' class="notimewidget-msg notime-notsuppostcode" >
+            <span data-bind="i18n: 'Not Supported Postcode'"></span>
+        </div>
+        <div id='notimeWidgetDeliverySelected' class="notimewidget-msg notime-deliveryselect" data-bind="visible: flag()">
+            <span data-bind="i18n: 'You have successfully selected time window'"></span>
+        </div>
+        <div id='notimeWidgetDeliveryTime' data-bind="visible: flag(), html: time()"></div>
+        <div id="notimeWidgetButton-container"></div>
+
+        <input type="hidden"
+               data-bind="
+               value: getNotimeShippingPostcode(),
+               attr: {
+               'id': 'notimepostcode',
+               'name': 'notimepostcode',
+               }"/>
+        <input type="hidden"
+               data-validate="{'required-entry':true}"
+               data-bind="
+               value: checkoutConfig.quoteData.notime_shipment_id,
+               attr: {
+               'id': 'notime_shipment_id',
+               'name': 'notime_shipment_id'
+               }"/>
+        <div data-bind="initNotimeWidget: {}"> </div>
+    </div>
+</div>
+
